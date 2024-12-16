@@ -16,24 +16,36 @@ know whether this package might be useful for them.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Create fretboard block diagrams for all sorts of stringed instruments. Control the title, number of strings and frets, starting fret, marker shape and size, 
+font, text colors, etc.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use this plugin, add `frets` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/). 
+  
+See the example to get started quickly. To generate the platform folders run:
+
+```dart
+flutter create .
+```
+
+in the example folder.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Add a Frets widget to your widget tree.
 
 ```dart
-const like = 'sample';
+Frets(
+      root: "C",
+      markers: [
+        [null, null, null, null, null, null],
+        [null, null, Marker(character: '2'), null, null, null],
+        [null, Marker(character: '3'), null, null, null, null],
+      ]),
+),
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+
