@@ -1,14 +1,15 @@
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:frets/src/frets_chord.dart';
 import 'package:frets/src/marker.dart';
 
 final String sharp = String.fromCharCode((0x268D));
 final String natural = String.fromCharCode((0x267D));
 final String flat = String.fromCharCode((0x266));
 
+/// The Frets widget is used to display a fretboard with markers for chords.
 class Frets extends StatelessWidget {
   const Frets(
       {super.key,
@@ -30,22 +31,39 @@ class Frets extends StatelessWidget {
       this.headerSize = 25,
       this.fontFamily = "packages/frets/MuseJazzText"});
 
+  /// Widget Height
   final int height;
+  /// Widget Width
   final int width;
+  /// Padding around the widget
   final EdgeInsets padding;
+  /// Number of strings
   final int strings;
+  /// The fret number that the first fret should be displayed as  
   final int? startFret;
+  /// Number of frets
   final int frets;
+  /// The root note of the chord
   final String root;
+  /// The chord extension in superscript
   final String extension;
+  /// The size of the header text
   final double headerSize;
+  /// The markers to display on the top of the fretboard
   final List<Marker?>? openMarkers;
+  /// The markers to display on the fretboard
   final List<List<Marker?>> markers;
+  /// The default size of the markers
   final int? markerSize;
+  /// The default color of the markers
   final Color markerColor;
+  /// The default text color of the markers
   final Color markerTextColor;
+  /// The default border color of the markers
   final Color borderColor;
+  /// The default border size of the markers
   final int borderSize;
+  /// The default font family to use for the text
   final String fontFamily;
 
   @override
@@ -206,85 +224,17 @@ class FretPainter extends CustomPainter {
         double radius = marker.radius as double? ?? shapeRadius;
         double borderSize = (marker.borderSize ?? parent.borderSize) as double;
 
+        double barreLength = (marker.shape == MarkerShape.barre)
+            ?   
+            marker.barreLength == null
+                ? (parent.strings - j - 1) * stringSpacing:
+                min((marker.barreLength! -1) * stringSpacing, (parent.strings - j - 1) * stringSpacing)
+              
+            : 0;
+
         drawMarker(marker, canvas, x, y, radius, bgColor, borderSize, brdColor,
-            size, txtColor);
-        // else if (marker[0] == 'c') {
-        //   canvas.drawCircle(
-        //       Offset(x, y),
-        //       shapeRadius,
-        //       Paint()
-        //         ..color = parent.markerTextColor
-        //         ..style = PaintingStyle.fill);
-        //   canvas.drawCircle(
-        //       Offset(x, y),
-        //       shapeRadius,
-        //       Paint()
-        //         ..color = parent.markerColor
-        //         ..style = PaintingStyle.stroke);
-        // }
-
-        //  else if (marker[0] == 't') {
-        //   canvas.drawPath(
-        //       Path()
-        //         ..moveTo(x, y - shapeRadius)
-        //         ..lineTo(x + shapeRadius, y + shapeRadius)
-        //         ..lineTo(x - shapeRadius, y + shapeRadius)
-        //         ..close(),
-        //       Paint()
-        //         ..color = parent.markerTextColor
-        //         ..style = PaintingStyle.fill);
-        //   canvas.drawPath(
-        //       Path()
-        //         ..moveTo(x, y - shapeRadius)
-        //         ..lineTo(x + shapeRadius, y + shapeRadius)
-        //         ..lineTo(x - shapeRadius, y + shapeRadius)
-        //         ..close(),
-        //       Paint()
-        //         ..color = parent.markerColor
-        //         ..style = PaintingStyle.stroke);
-        // }
-
-        // else if (marker[0] == 's') {
-        //   canvas.drawRect(
-        //       Rect.fromCenter(
-        //           center: Offset(x, y),
-        //           width: shapeRadius * 2,
-        //           height: shapeRadius * 2),
-        //       Paint()
-        //         ..color = parent.markerTextColor
-        //         ..style = PaintingStyle.fill);
-        //   canvas.drawRect(
-        //       Rect.fromCenter(
-        //           center: Offset(x, y),
-        //           width: shapeRadius * 2,
-        //           height: shapeRadius * 2),
-        //       Paint()
-        //         ..color = parent.markerColor
-        //         ..style = PaintingStyle.stroke);
-        // }
-
-        // else if (marker[0] == 'd') {
-        //   canvas.drawPath(
-        //       Path()
-        //         ..moveTo(x, y - shapeRadius)
-        //         ..lineTo(x + shapeRadius, y)
-        //         ..lineTo(x, y + shapeRadius)
-        //         ..lineTo(x - shapeRadius, y)
-        //         ..close(),
-        //       Paint()
-        //         ..color = parent.markerTextColor
-        //         ..style = PaintingStyle.fill);
-        //   canvas.drawPath(
-        //       Path()
-        //         ..moveTo(x, y - shapeRadius)
-        //         ..lineTo(x + shapeRadius, y)
-        //         ..lineTo(x, y + shapeRadius)
-        //         ..lineTo(x - shapeRadius, y)
-        //         ..close(),
-        //       Paint()
-        //         ..color = parent.markerColor
-        //         ..style = PaintingStyle.stroke);
-        // }
+            size, txtColor,
+            barreLength: barreLength);
       }
     }
 
@@ -305,7 +255,8 @@ class FretPainter extends CustomPainter {
       double borderSize,
       ui.Color brdColor,
       ui.Size size,
-      ui.Color txtColor) {
+      ui.Color txtColor,
+      {double barreLength = 0}) {
     switch (marker.shape ?? MarkerShape.circle) {
       case MarkerShape.circle:
         canvas.drawCircle(Offset(x, y), radius, Paint()..color = bgColor);
@@ -380,16 +331,53 @@ class FretPainter extends CustomPainter {
                 ..strokeWidth = borderSize);
         }
         break;
+
+      case MarkerShape.barre:
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(
+                x - radius, y - radius, barreLength + 2 * radius, 2 * radius),
+            Radius.circular(radius),
+          ),
+          Paint()..color = bgColor,
+        );
+        if (borderSize > 0) {
+          canvas.drawRRect(
+            RRect.fromRectAndRadius(
+              Rect.fromLTWH(
+                  x - radius, y - radius, barreLength + 2 * radius, 2 * radius),
+              Radius.circular(radius),
+            ),
+            Paint()
+              ..color = brdColor
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = borderSize,
+          );
+        }
+
+      case MarkerShape.none:
+        break;
     }
-    if (marker.character != null) {
-      drawString(
-          canvas,
-          size,
-          Offset(x, y),
-          marker.character ?? "",
-          marker.radius as double? ?? radius * 1.2,
-          txtColor,
-          marker.fontFamily ?? parent.fontFamily);
+    if (marker.text != null) {
+      if (marker.shape == MarkerShape.barre) {
+        drawString(
+            canvas,
+            size,
+            Offset(x + barreLength / 2, y),
+            marker.text ?? "",
+            marker.radius as double? ?? radius * 1.2,
+            txtColor,
+            marker.fontFamily ?? parent.fontFamily);
+      } else {
+        drawString(
+            canvas,
+            size,
+            Offset(x, y),
+            marker.text ?? "",
+            marker.radius as double? ?? radius * 1.2,
+            txtColor,
+            marker.fontFamily ?? parent.fontFamily);
+      }
     }
   }
 

@@ -2,11 +2,11 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 import 'package:frets/frets.dart';
 import 'dart:html' as html;
 
+
+typedef M = Marker;
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -56,21 +56,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var m1 = M(character: "1");
-    var m1r = M(character: "1", bgColor: Colors.grey, borderSize: 2);
+    var m1 = M(text: "1");
+    var m1r = M(text: "1", bgColor: Colors.grey, borderSize: 2);
     var m2b = M(
-        character: "2",
+        text: "2",
         bgColor: Colors.blue,
         textColor: Colors.black,
         borderSize: 2);
     var m4b = M(
-        character: "4",
+        text: "4",
         bgColor: Colors.blue,
         textColor: Colors.black,
         borderSize: 2);
-    var m3 = M(character: "3");
-    var m3r = M(character: "3", bgColor: Colors.grey, borderSize: 2);
-    var m4 = M(character: "4");
+    var m3 = M(text: "3");
+    var m3r = M(text: "3", bgColor: Colors.grey, borderSize: 2);
+    var m4 = M(text: "4");
 
     return Center(
       child: Column(
@@ -92,15 +92,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     headerSize: 40,
                     openMarkers: [
                       M(
-                          character: "X",
+                          text: "X",
                           radius: 26,
                           bgColor: Colors.transparent,
                           textColor: Colors.black)
                     ],
                     markers: [
-                      [null, null, null, null, null, null],
-                      [null, null, M(character: '2'), null, null, null],
-                      [null, M(character: '3'), null, null, null, null],
+                      [null, null, null, M(shape: MarkerShape.barre,text: "1",barreLength: 4), null, null],
+                      [null, null, M(text: '2'), null, null, null],
+                      [null, M(text: '3'), null, null, null, null],
                     ]),
               ),
             ),
