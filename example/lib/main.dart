@@ -7,7 +7,9 @@ import 'dart:html' as html;
 
 
 typedef M = Marker;
+
 void main() => runApp(MyApp());
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -56,22 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var m1 = M(text: "1");
-    var m1r = M(text: "1", bgColor: Colors.grey, borderSize: 2);
-    var m2b = M(
-        text: "2",
-        bgColor: Colors.blue,
-        textColor: Colors.black,
-        borderSize: 2);
-    var m4b = M(
-        text: "4",
-        bgColor: Colors.blue,
-        textColor: Colors.black,
-        borderSize: 2);
-    var m3 = M(text: "3");
-    var m3r = M(text: "3", bgColor: Colors.grey, borderSize: 2);
-    var m4 = M(text: "4");
-
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -84,24 +70,45 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Frets(
-                    root: "C",
-                    extension: "maj7",
-                    width: 300,
-                    height: 300,
-                    headerSize: 40,
-                    openMarkers: [
-                      M(
-                          text: "X",
-                          radius: 26,
-                          bgColor: Colors.transparent,
-                          textColor: Colors.black)
-                    ],
-                    markers: [
-                      [null, null, null, M(shape: MarkerShape.barre,text: "1",barreLength: 4), null, null],
-                      [null, null, M(text: '2'), null, null, null],
-                      [null, M(text: '3'), null, null, null, null],
-                    ]),
+                child: Row(
+                  children: [
+                    Frets(
+                        root: "Major Chord - A Shape",
+                        width: 300,
+                        height: 300,
+                        headerSize: 20,
+                        openMarkers: [
+                          M(
+                              text: "X",
+                              radius: 26,
+                              bgColor: Colors.transparent,
+                              textColor: Colors.black)
+                        ],
+                        markers: [
+                          [null, Mark.b1],
+                          [],
+                          [null, null,Mark.b3, null, null, null],
+                        ]),
+                        Frets(
+                        root: "C",
+                        extension: "maj7",
+                        width: 300,
+                        height: 300,
+                        headerSize: 40,
+                        openMarkers: [
+                          M(
+                              text: "X",
+                              radius: 26,
+                              bgColor: Colors.transparent,
+                              textColor: Colors.black)
+                        ],
+                        markers: [
+                  [],
+                          [null, null, Mark.c2, null, null, null],
+                          [null,Mark.c3, null, null, null, null],
+                        ]),
+                  ],
+                ),
               ),
             ),
           ),
@@ -115,15 +122,15 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Frets(
-                root: "Minor Blues Scale",
-                headerSize: 30,
+                root: "Major Chord - E Shape",
+                 headerSize: 20,
                 width: 300,
                 height: 300,
                 markers: [
-                  [m1r, m1, m1, m1, m1, m1r],
-                  [null, m2b, null, null, null, null],
-                  [null, m3, m3r, m3, null, null],
-                  [m4, null, null, m4b, m4, m4]
+                  [M(shape: MarkerShape.barre,text: "1")],
+                  [null, null, null,Mark.c2, null,  null],
+                  [null, Mark.c3i, Mark.c4, null, null, null],
+                  [null, null, null, null, null, null],
                 ],
               ),
             ),
