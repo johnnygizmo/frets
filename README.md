@@ -1,39 +1,37 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Create fretboard block diagrams for all sorts of stringed instruments.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Control the title, number of strings and frets, and starting fret For each marker, control the shape and size, 
+font, text colors, etc.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use this plugin, add `frets` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/). 
+  
+See the example to get started quickly. To generate the platform folders run:
+
+```dart
+flutter create .
+```
+
+in the example folder.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Add a Frets widget to your widget tree.
 
 ```dart
-const like = 'sample';
+Frets(
+      root: "C",
+      markers: [
+        [null, null, null, null, null, null],
+        [null, null, Marker(character: '2'), null, null, null],
+        [null, Marker(character: '3'), null, null, null, null],
+      ]),
+),
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+
