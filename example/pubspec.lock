@@ -162,6 +162,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.15.0"
+  music_notes:
+    dependency: transitive
+    description:
+      name: music_notes
+      sha256: "238b510f09d74561622025771a6a1addddc3f8e032aca91f4d5885aa6292115e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.20.0"
   path:
     dependency: transitive
     description:
